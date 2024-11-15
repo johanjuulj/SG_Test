@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="align-center col-10 offset-1">
+    <div class="d-flex justify-content-between align-items-center">
+        <p class="lead ml-0">My Tasks</p>
+        <form hx-post="{% url 'add-task' %}" hx-target='#task-list' class="d-flex align-items-center">
+            {% csrf_token %}
+            <input type="text" name="taskname" class="form-control-sm mr-2" placeholder="Enter a task" />
+            <button type="submit" class="btn btn-success btn-sm">Add Task</button>
+        </form>
+    </div>
+    <hr/>
+    
+    <div id="task-list">
+        {% include 'partials/task-list.html' %}
+    </div>
+</div>
+{% endblock content %}
