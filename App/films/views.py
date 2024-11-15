@@ -33,6 +33,27 @@ class TasksView(ListView):
     def get_queryset(self):
         user = self.request.user
         return user.tasks.all()
+    
+def add_task(request):
+    name = request.POST.get('taskname')
+    
+    # add task
+    task = Task.objects.create(taskName=name)
+    
+    # add the task to the user's list
+    request.user.tasks.add(task)
+
+    # return template fragment with all the user's tasks
+    tasks = request.user.tasks.all()
+    return render(request, 'partials/task-list.html', {'tasks': tasks})
+
+def delete_task(request, pk):
+    # remove the task from the user's list
+    request.user.tasks.remove(pk)
+
+    # return template fragment with all the user's tasks
+    tasks = request.user.tasks.all()
+    return render(request, 'partials/task-list.html', {'tasks': tasks})
 
 
 def check_username(request):

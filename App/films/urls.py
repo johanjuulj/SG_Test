@@ -7,13 +7,16 @@ urlpatterns = [
     path('login/', views.Login.as_view(), name='login'),
     path('logout/', LogoutView.as_view(), name='logout'),
     path("register/", views.RegisterView.as_view(), name="register"),
-    path("tasks/", views.TasksView.as_view(), name="task-list"),
+    path("tasks/", views.TasksView.as_view(), name="tasks"),
 ]
+
 
 
 
 htmx_urlpatterns = [
     path("check-username/", views.check_username, name='check-username'),
+    path('add-task/', views.add_task, name='add-task'),
+    path('delete-task/<int:pk>/', views.delete_task, name='delete-task')
     
 ]
 
