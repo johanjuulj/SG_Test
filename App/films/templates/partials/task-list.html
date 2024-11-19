@@ -24,3 +24,19 @@
 {% else %}
 <p>There are no current tasks</p>
 {% endif %}
+
+
+
+<section class="col-4 offset-1">
+    {% include 'partials/search.html' %}
+</section>
+</div>
+
+{% if request.method == 'POST' %}
+<input type="text"
+    hx-swap-oob="true"
+    id="filmname-input"
+    name="filmname" 
+    class="form-control-sm mr-2" 
+    placeholder="Enter a film" />
+{% endif %}

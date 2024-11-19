@@ -6,14 +6,20 @@
         <p class="lead ml-0">My Tasks</p>
         <form hx-post="{% url 'add-task' %}" hx-target='#task-list' class="d-flex align-items-center">
             {% csrf_token %}
-            <input type="text" name="taskname" class="form-control-sm mr-2" placeholder="Enter a task" />
+            <input type="text" 
+                id="taskname-input"
+                name="taskname" 
+                class="form-control-sm mr-2" 
+                placeholder="Enter a task" />
             <button type="submit" class="btn btn-success btn-sm">Add Task</button>
         </form>
     </div>
     <hr/>
     
-    <div id="task-list">
-        {% include 'partials/task-list.html' %}
-    </div>
+    <main class="d-flex">
+        <section id="task-list" class="col-12">
+            {% include 'partials/task-list.html' %}
+        </section>
+    </main>
 </div>
 {% endblock content %}

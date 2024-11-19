@@ -34,6 +34,7 @@ class TasksView(ListView):
         user = self.request.user
         return user.tasks.all()
     
+#@login_required
 def add_task(request):
     name = request.POST.get('taskname')
     
@@ -47,6 +48,8 @@ def add_task(request):
     tasks = request.user.tasks.all()
     return render(request, 'partials/task-list.html', {'tasks': tasks})
 
+#@login_required
+#@require_http_methods(["DELETE"])
 def delete_task(request, pk):
     # remove the task from the user's list
     request.user.tasks.remove(pk)
@@ -54,6 +57,13 @@ def delete_task(request, pk):
     # return template fragment with all the user's tasks
     tasks = request.user.tasks.all()
     return render(request, 'partials/task-list.html', {'tasks': tasks})
+
+def search_task(request):
+    search_text = request.POST.get('search')
+    
+    results = Task.objects.filter(name_contains=search_text)
+    context = {'results': results}
+    return render(request, 'partials/search-results.html', context)
 
 
 def check_username(request):
