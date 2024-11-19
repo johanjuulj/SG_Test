@@ -60,8 +60,9 @@ def delete_task(request, pk):
 
 def search_task(request):
     search_text = request.POST.get('search')
+    usertasks = request.yser.tasks.all()
     
-    results = Task.objects.filter(name_contains=search_text)
+    results = Task.objects.filter(name_contains=search_text).exclude(name__in=usertasks.values_list('name', flat=True))
     context = {'results': results}
     return render(request, 'partials/search-results.html', context)
 
@@ -75,3 +76,18 @@ def check_username(request):
     else:
         return HttpResponse('<div id="username-err" class="success"> This username is available</div>')
 
+"""
+def clear(request):
+    return HttpResponse("")
+
+def sort(request):
+    task_pks_order = request.POST.getlist('task_order')
+    tasks = []
+    for idx, task_pk in enumerate(task_pks_order, start=1):
+        task = Task.objects.get(pk=task_pk)
+        task.order = idx
+        task.save()
+        tasks.append(task)
+
+    return render(request, 'partials/task-list.html', {'tasks': tasks})
+"""
