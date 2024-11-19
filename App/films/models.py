@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django.db.models.functions import Lower
 
 class User(AbstractUser):
     pass
@@ -11,3 +12,5 @@ class Task(models.Model):
     #owner = models.ForeignKey(User, on_delete=models.CASCADE)
     #created_at = models.DateTimeField(auto_now_add=True)
     
+    class Meta:
+        ordering = [Lower("name")]

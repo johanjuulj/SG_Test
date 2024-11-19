@@ -33,6 +33,9 @@ class TasksView(ListView):
     def get_queryset(self):
         user = self.request.user
         return user.tasks.all()
+#
+# ´move HTMX views to another file
+
     
 #@login_required
 def add_task(request):
@@ -46,6 +49,7 @@ def add_task(request):
 
     # return template fragment with all the user's tasks
     tasks = request.user.tasks.all()
+    messages.success(request, 'Added {name} to list of tasks')
     return render(request, 'partials/task-list.html', {'tasks': tasks})
 
 #@login_required
