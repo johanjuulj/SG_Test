@@ -30,6 +30,11 @@
         {% block content %}
         {% endblock %}
     </div>
-    
-</body>
+    <script>
+        document.addEventListener('htmx:configRequest', (event) => {
+            let token = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
+            event.detail.headers['X-CSRFToken'] = token;
+        });
+    </script>
+ 
 </html>
