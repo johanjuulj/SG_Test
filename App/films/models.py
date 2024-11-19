@@ -8,9 +8,17 @@ class User(AbstractUser):
 class Task(models.Model):
     taskName = models.CharField(max_length=255)
     description = models.TextField()
-    users= models.ManyToManyField(User, related_name="tasks")
+    users= models.ManyToManyField(User, related_name="tasks", through="UserTasks")
     #owner = models.ForeignKey(User, on_delete=models.CASCADE)
     #created_at = models.DateTimeField(auto_now_add=True)
     
     class Meta:
         ordering = [Lower("name")]
+
+class UserTasks(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    task = models.ForeignKey(Task, on_delete=models.CASCADE)
+    order = models.PositiveSmallIntegerField(default=1)
+
+    class Meta:
+        ordering = ["order"]

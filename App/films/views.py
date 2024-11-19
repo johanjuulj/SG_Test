@@ -36,7 +36,7 @@ class TasksView(ListView):
 #
 # ´move HTMX views to another file
 
-    
+
 #@login_required
 def add_task(request):
     name = request.POST.get('taskname')
@@ -80,7 +80,7 @@ def check_username(request):
     else:
         return HttpResponse('<div id="username-err" class="success"> This username is available</div>')
 
-"""
+
 def clear(request):
     return HttpResponse("")
 
@@ -94,4 +94,3 @@ def sort(request):
         tasks.append(task)
 
     return render(request, 'partials/task-list.html', {'tasks': tasks})
-"""
