@@ -8,7 +8,7 @@
             <span class="badge badge-success badge-pill" 
                 style="cursor: pointer;"
                 hx-post="{% url 'add-film' %}"
-                hx-vals='{"taskname": "{{task.name}}"}'
+                hx-vals='{"taskname": "{{task.taskName}}"}'
                 hx-target="#task-list">add</span>
         </li>
     {% endfor %}

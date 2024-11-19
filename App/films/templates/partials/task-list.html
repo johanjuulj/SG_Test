@@ -13,13 +13,13 @@
 
 
         {% csrf_token %}
-        <form class="sortable list-group" hx-trigger="end" hx-post="{% url 'sort' %}" hx-target="#task-list">
+        <form class="sortable list-group" hx-trigger="end" hx-post="/sort" hx-target="#task-list">
             <div class="htmx-indicator">Updating...</div>
             {% for task in tasks %}
             <div>
                 <input type="hidden" name="task_order" value="{{ task.pk }}" />
                 <li class="list-group-item d-flex justify-content-between align-items-center">
-                    #{{task.order}} {{ task.task.name }}
+                    #{{task.order}} {{ task.taskName }}
                     <span class="badge badge-danger badge-pill" 
                         style="cursor: pointer;"
                         hx-delete="{% url 'delete-task' task.pk %}"
@@ -45,6 +45,6 @@
 </div>
 
 {% if request.method == 'POST' %}
-<input type="text" hx-swap-oob="true" id="filmname-input" name="filmname" class="form-control-sm mr-2"
-    placeholder="Enter a film" />
+<input type="text" hx-swap-oob="true" id="taskname-input" name="taskname" class="form-control-sm mr-2"
+    placeholder="Enter a task" />
 {% endif %}

@@ -2,13 +2,15 @@ from django.db.models.query import QuerySet
 from django.http.response import HttpResponse, HttpResponsePermanentRedirect
 from django.shortcuts import render
 from django.contrib.auth.views import LoginView
+from django.contrib import messages
 from django.urls import reverse_lazy
 from django.views.generic import FormView, TemplateView
 from django.contrib.auth import get_user_model
 from django.views.generic.list import ListView
+from films.utils import get_max_order, reorder
 
 from films.forms import RegisterForm
-from films.models import Task
+from films.models import Task , UserTasks
 # Create your views here.
 class IndexView(TemplateView):
     template_name = 'index.html'
@@ -27,30 +29,46 @@ class RegisterView(FormView):
 
 class TasksView(ListView):
     template_name = 'tasks.html'
+   
     model = Task
+    
     context_object_name = 'tasks'
-
+    
     def get_queryset(self):
         user = self.request.user
-        return user.tasks.all()
+        
+        return UserTasks.objects.filter(user=self.request.user)
 #
 # ´move HTMX views to another file
 
 
 #@login_required
 def add_task(request):
-    name = request.POST.get('taskname')
+    name = request.POST.get('taskName')
     
     # add task
-    task = Task.objects.create(taskName=name)
-    
-    # add the task to the user's list
+    task = Task.objects.get_or_create(taskName=name)[0]
+
+    # add the film to the user's list
+    if not UserTasks.objects.filter(task=task, user=request.user).exists():
+        UserTasks.objects.create(
+            task=task, 
+            user=request.user, 
+            order=get_max_order(request.user)
+        )
+
+    # return template fragment with all the user's films
+    tasks = UserTasks.objects.filter(user=request.user)
+    messages.success(request, f"Added {name} to list of tasks")
+    return render(request, 'partials/task-list.html', {'tasks': tasks})
+"""    # add the task to the user's list
     request.user.tasks.add(task)
 
     # return template fragment with all the user's tasks
     tasks = request.user.tasks.all()
     messages.success(request, 'Added {name} to list of tasks')
-    return render(request, 'partials/task-list.html', {'tasks': tasks})
+    return render(request, 'partials/task-list.html', {'tasks': tasks})"""
+
 
 #@login_required
 #@require_http_methods(["DELETE"])
