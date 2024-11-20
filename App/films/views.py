@@ -63,7 +63,9 @@ def add_task(request):
     tasks = UserTasks.objects.filter(user=request.user)
     messages.success(request, f"Added {name} to list of tasks")
     return render(request, 'partials/task-list.html', {'tasks': tasks})
+
 """    # add the task to the user's list
+
     request.user.tasks.add(task)
 
     # return template fragment with all the user's tasks
@@ -108,9 +110,9 @@ def sort(request):
     task_pks_order = request.POST.getlist('task_order')
     tasks = []
     for idx, task_pk in enumerate(task_pks_order, start=1):
-        task = Task.objects.get(pk=task_pk)
-        task.order = idx
-        task.save()
-        tasks.append(task)
-
+        usertask = UserTasks.objects.get(pk=task_pk)
+        usertask.order = idx
+        usertask.save()
+        tasks.append(usertask)
+    
     return render(request, 'partials/task-list.html', {'tasks': tasks})
