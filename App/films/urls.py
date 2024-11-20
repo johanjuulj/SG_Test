@@ -19,7 +19,7 @@ htmx_urlpatterns = [
     path('delete-task/<int:pk>/', views.delete_task, name='delete-task'),
     path('search-task/', views.search_task, name='search-task'),
     path('clear/', views.clear, name='clear'),
-    #path('sort/', views.sort, name='sort'),
+    path('sort/', views.sort, name='sort'),
     
 ]
 

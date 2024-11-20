@@ -35,7 +35,9 @@ class TasksView(ListView):
     context_object_name = 'tasks'
     
     def get_queryset(self):
-        user = self.request.user
+        for x in UserTasks.objects.filter(user=self.request.user):
+            print(x.task.taskName)
+      
         
         return UserTasks.objects.filter(user=self.request.user)
 #
@@ -44,7 +46,7 @@ class TasksView(ListView):
 
 #@login_required
 def add_task(request):
-    name = request.POST.get('taskName')
+    name = request.POST.get('taskname')
     
     # add task
     task = Task.objects.get_or_create(taskName=name)[0]
@@ -74,17 +76,17 @@ def add_task(request):
 #@require_http_methods(["DELETE"])
 def delete_task(request, pk):
     # remove the task from the user's list
-    request.user.tasks.remove(pk)
-
+    UserTasks.objects.get(pk=pk).delete()
+    reorder(request.user)
     # return template fragment with all the user's tasks
-    tasks = request.user.tasks.all()
+    tasks = UserTasks.objects.filter(user=request.user)
     return render(request, 'partials/task-list.html', {'tasks': tasks})
 
 def search_task(request):
     search_text = request.POST.get('search')
-    usertasks = request.yser.tasks.all()
+    usertasks = UserTasks.objects.filter(user=request.user)
     
-    results = Task.objects.filter(name_contains=search_text).exclude(name__in=usertasks.values_list('name', flat=True))
+    results = Task.objects.filter(name__icontains=search_text).exclude(name__in=usertasks.values_list('task__name', flat=True))
     context = {'results': results}
     return render(request, 'partials/search-results.html', context)
 
