@@ -64,14 +64,6 @@ def add_task(request):
     messages.success(request, f"Added {name} to list of tasks")
     return render(request, 'partials/task-list.html', {'tasks': tasks})
 
-"""    # add the task to the user's list
-
-    request.user.tasks.add(task)
-
-    # return template fragment with all the user's tasks
-    tasks = request.user.tasks.all()
-    messages.success(request, 'Added {name} to list of tasks')
-    return render(request, 'partials/task-list.html', {'tasks': tasks})"""
 
 
 #@login_required
@@ -84,12 +76,18 @@ def delete_task(request, pk):
     tasks = UserTasks.objects.filter(user=request.user)
     return render(request, 'partials/task-list.html', {'tasks': tasks})
 
+
+
 def search_task(request):
     search_text = request.POST.get('search')
+    print(search_text)  
+    # look up all tasks that contain the text
+    # exclude user tasks
     usertasks = UserTasks.objects.filter(user=request.user)
-    
-    results = Task.objects.filter(name__icontains=search_text).exclude(name__in=usertasks.values_list('task__name', flat=True))
-    context = {'results': results}
+    print(usertasks)
+    results = Task.objects.filter(taskName__icontains=search_text).exclude(taskName__in=usertasks.values_list('task__taskName', flat=True))
+    print(results)
+    context = {"results": results}
     return render(request, 'partials/search-results.html', context)
 
 

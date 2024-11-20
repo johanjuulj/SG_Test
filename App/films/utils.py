@@ -19,3 +19,4 @@ def reorder(user):
     for order, user_tasks in zip(new_ordering, existing_tasks):
         user_tasks.order = order
         user_tasks.save()
+

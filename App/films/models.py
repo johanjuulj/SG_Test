@@ -13,7 +13,7 @@ class Task(models.Model):
     #created_at = models.DateTimeField(auto_now_add=True)
     
     class Meta:
-        ordering = [Lower("name")]
+        ordering = [Lower("taskName")]
 
 class UserTasks(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
