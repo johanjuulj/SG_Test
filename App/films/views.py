@@ -23,6 +23,8 @@ class RegisterView(FormView):
     template_name = 'registration/register.html'
     success_url = reverse_lazy('login')
 
+    
+
     def form_valid(self, form):
         form.save()  # save the user
         return super().form_valid(form)
@@ -31,11 +33,15 @@ class TasksList(ListView):
     template_name = 'tasks.html'
    
     model = UserTasks   
-    paginate_by= 5
+    paginate_by= 20
     context_object_name = 'tasks'
+
+    def get_template_names(self) -> list[str]:
+        if self.request.htmx:
+            return ['partials/task-list-element.html']
+        return ['tasks.html']
     
     def get_queryset(self):
-     
         return UserTasks.objects.filter(user=self.request.user)
 #
 # ´move HTMX views to another file

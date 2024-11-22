@@ -1,8 +1,14 @@
 {% for task in tasks %}
-            <div>
+{% if forloop.last %}
+<div hx-get="{% url 'tasks' %}?page={{ page_obj.number|add:1 }}" hx-trigger="revealed" hx-swap="afterend" hx-target="this"> 
+
+{%else%}
+<div>
+{%endif%}
+           
                 <input type="hidden" name="task_order" value="{{ task.pk }}" />
                 <li class="list-group-item d-flex justify-content-between align-items-center">
-                    <a hx-get="{%url 'detail' task.pk %}" 
+                    <a hx-get="{% url 'detail' task.pk %}" 
                     hx-target="#task-list"
                     hx-push-url="/tasks/{{ task.task.taskName }}">
                     #{{task.order}} {{ task.task.taskName }}
