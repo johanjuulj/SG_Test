@@ -1,6 +1,6 @@
 from django.db.models.query import QuerySet
 from django.http.response import HttpResponse, HttpResponsePermanentRedirect
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.views import LoginView
 from django.contrib import messages
 from django.urls import reverse_lazy
@@ -80,21 +80,30 @@ def delete_task(request, pk):
 
 def search_task(request):
     search_text = request.POST.get('search')
-    print(search_text)  
+    
     # look up all tasks that contain the text
     # exclude user tasks
     usertasks = UserTasks.objects.filter(user=request.user)
-    print(usertasks)
+   
     results = Task.objects.filter(taskName__icontains=search_text).exclude(taskName__in=usertasks.values_list('task__taskName', flat=True))
-    print(results)
+  
     context = {"results": results}
     return render(request, 'partials/search-results.html', context)
 
+def detail(request, pk):
+    usertask = get_object_or_404(UserTasks, pk=pk)
+    context = {"usertask": usertask}
+    return render(request, 'partials/task-detail.html', context)
+
+def task_list_partial(request):
+    tasks = UserTasks.objects.filter(user=request.user)
+    context = {"tasks": tasks}
+    return render(request, 'partials/task-list.html', context)
 
 def check_username(request):
-    print("test")
+    
     username = request.POST.get('username')
-    print("testtest")
+    
     if get_user_model().objects.filter(username=username).exists():
         return HttpResponse('<div id="username-err" class="error"> This username already exists</div>')
     else:
@@ -114,3 +123,11 @@ def sort(request):
         tasks.append(usertask)
     
     return render(request, 'partials/task-list.html', {'tasks': tasks})
+
+
+def upload_photo(request, pk):
+    usertask = get_object_or_404(UserTasks, pk=pk)
+    usertask.task.photo = request.FILES.get('photo')
+    usertask.task.save()
+    context = {"usertask": usertask}
+    return render(request, 'partials/task-detail.html', context)

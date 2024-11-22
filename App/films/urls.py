@@ -20,6 +20,9 @@ htmx_urlpatterns = [
     path('search-task/', views.search_task, name='search-task'),
     path('clear/', views.clear, name='clear'),
     path('sort/', views.sort, name='sort'),
+    path('detail/<int:pk>/', views.detail, name='detail'),
+    path('task-list-partial/', views.task_list_partial, name='task-list-partial'),
+    path('upload-photo/<int:pk>', views.upload_photo, name='upload-photo'),
     
 ]
 

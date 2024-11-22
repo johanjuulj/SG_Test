@@ -11,6 +11,7 @@ class Task(models.Model):
     users= models.ManyToManyField(User, related_name="tasks", through="UserTasks")
     #owner = models.ForeignKey(User, on_delete=models.CASCADE)
     #created_at = models.DateTimeField(auto_now_add=True)
+    photo = models.ImageField(upload_to='task_photos/%Y/%m/%d/', blank=True, null=True) #update to files
     
     class Meta:
         ordering = [Lower("taskName")]

@@ -1,0 +1,26 @@
+<div class="d-flex justify-content-between align-items-top">
+    <div>
+        <h2 class="text-success mb-4"> {{ usertask.task.taskName }}</h2>
+
+        <p>This task is # {{ usertask.order }} on your priority list</p>
+
+        <button class="btn btn-prinary" hx-get="{% url 'task-list-partial' %}" hx-target="#task-list">Return to List</button>
+    </div>
+
+    <div>
+        {% if usertask.task.photo %}
+            <img src="{{ usertask.task.photo.url }}" style="max-width: 200px; max-height: 200px" alt="">
+        {% else %}  
+        <p>No photo yet</p>
+        {% endif %}
+
+        <form hx-encoding="multipart/form-data" hx-post="{% url 'upload-photo' usertask.pk %}" hx-target="#task-list">
+            {% csrf_token %}
+            <div class="form-group">
+                <input type="file" name="photo">
+                
+            </div>
+            <button class="btn btn-success" type="submit"> Upload Photo</button>
+        </form>
+    </div>
+</div>
