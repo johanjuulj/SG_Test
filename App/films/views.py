@@ -27,18 +27,15 @@ class RegisterView(FormView):
         form.save()  # save the user
         return super().form_valid(form)
 
-class TasksView(ListView):
+class TasksList(ListView):
     template_name = 'tasks.html'
    
-    model = Task
-    
+    model = UserTasks   
+    paginate_by= 5
     context_object_name = 'tasks'
     
     def get_queryset(self):
-        for x in UserTasks.objects.filter(user=self.request.user):
-            print(x.task.taskName)
-      
-        
+     
         return UserTasks.objects.filter(user=self.request.user)
 #
 # ´move HTMX views to another file

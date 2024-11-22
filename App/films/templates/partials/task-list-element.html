@@ -1,0 +1,17 @@
+{% for task in tasks %}
+            <div>
+                <input type="hidden" name="task_order" value="{{ task.pk }}" />
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <a hx-get="{%url 'detail' task.pk %}" 
+                    hx-target="#task-list"
+                    hx-push-url="/tasks/{{ task.task.taskName }}">
+                    #{{task.order}} {{ task.task.taskName }}
+                </a>
+                    <span class="badge badge-danger badge-pill" 
+                        style="cursor: pointer;"
+                        hx-delete="{% url 'delete-task' task.pk %}"
+                        hx-target="#task-list"
+                        hx-confirm="Are you sure you wish to delete?">X</span>
+                </li>
+            </div>
+        {% endfor %}

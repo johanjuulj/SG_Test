@@ -4,7 +4,10 @@
 
         <p>This task is # {{ usertask.order }} on your priority list</p>
 
-        <button class="btn btn-prinary" hx-get="{% url 'task-list-partial' %}" hx-target="#task-list">Return to List</button>
+        <button class="btn btn-prinary" 
+        hx-get="{% url 'task-list-partial' %}" 
+        hx-target="#task-list"
+        hx-push-url="/tasks/">Return to List</button>
     </div>
 
     <div>
