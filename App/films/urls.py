@@ -1,6 +1,9 @@
-from django.urls import path
+from django.urls import path, include
 from films import views
 from django.contrib.auth.views import LogoutView
+import debug_toolbar
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('index/', views.IndexView.as_view(), name='index'),
@@ -8,7 +11,8 @@ urlpatterns = [
     path('logout/', LogoutView.as_view(), name='logout'),
     path("register/", views.RegisterView.as_view(), name="register"),
     path("tasks/", views.TasksList.as_view(), name="tasks"),
-]
+    
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 
 
@@ -27,3 +31,8 @@ htmx_urlpatterns = [
 ]
 
 urlpatterns += htmx_urlpatterns
+
+if settings.DEBUG:
+    urlpatterns += [
+        path('__debug__/', include('debug_toolbar.urls')),
+    ]

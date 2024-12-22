@@ -41,6 +41,7 @@
         {% block content %}
         {% endblock %}
     </div>
+
     <script>
         document.addEventListener('htmx:configRequest', (event) => {
             let token = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
@@ -58,5 +59,6 @@
             }
         })
     </script>
+      </body>
 
 </html>
