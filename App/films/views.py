@@ -18,6 +18,8 @@ class IndexView(TemplateView):
 class Login(LoginView):
     template_name = 'registration/login.html'
 
+
+
 class RegisterView(FormView):
     form_class = RegisterForm
     template_name = 'registration/register.html'
